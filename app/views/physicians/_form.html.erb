@@ -1,0 +1,24 @@
+<%= form_for @physician do |f| %>
+
+  <% if @physician.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@physician.errors.count, "error") %> evit&oacute; que se almacenara la informaci&oacute;n de este medico:
+      </h2>
+      <ul>
+        <% @physician.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label "Nombre" %><br>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>

@@ -1,0 +1,24 @@
+<div class="page-header"><h1>Ingresar</h1></div>
+
+<%= form_for @user_session do |f| %>
+  <%= render 'shared/errors', object: @user_session %>
+
+  <div class="form-group">
+    <%= f.label "Correo" %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Clave" %>
+    <%= f.password_field :password, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Recordarme" %>
+    <%= f.check_box :remember_me %>
+  </div>
+
+  <%= f.submit "Ingresar", class: 'btn btn-primary btn-lg' %>
+  <br/><br/>
+  <%= link_to 'Olvido de clave', new_password_reset_path, class: 'btn btn-sm btn-default' %>
+<% end %>

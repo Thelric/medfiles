@@ -1,0 +1,25 @@
+<% content_for :title, "Expedientes M\u00e9dicos - Datos de Pacientes" %>
+<h1>Datos de Medico</h1>
+
+<% if @physician.errors.any? %>
+	<div id="error_explanation">
+		<h2>
+			<%= pluralize(@physician.errors.count, "error") %> evit&oacute; que se almacenara el nuevo comentario:
+		</h2>
+		<ul>
+			<% @physician.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+
+<p>
+	<strong>Medico:</strong>
+	<%= @physician.name.strip %>
+</p>
+
+<br>
+<%= link_to 'Editar medico', edit_physician_path(@physician) %><br>
+<%= link_to 'Lista de medicos', physicians_path %>

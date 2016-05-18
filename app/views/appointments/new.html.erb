@@ -1,0 +1,51 @@
+<% content_for :title, "Expedientes M\u00e9dicos - Nueva Cita" %>
+<h1>Nueva Cita</h1>
+
+<p>
+	<div class="row">
+		<div class="col-md-12 text-center">
+			<div class="well controls">
+				<%= link_to new_appointment_path(date: @date - 1.month), class: "btn btn-default" do %>
+					<i class="glyphicon glyphicon-backward"></i>
+				<% end %>
+				<%= "#{@date.strftime("%B")} #{@date.year}" %>
+				<%= link_to new_appointment_path(date: @date + 1.month), class: "btn btn-default" do %>
+					<i class="glyphicon glyphicon-forward"></i>
+				<% end %>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<%= calendar @date do |date| %>
+				<!-- %= date.day %-->
+				<% tempdate = date.strftime("%Y-%m-%d") %>
+				<% if @date == date %>
+					<mark><strong><%= link_to date.day, new_appointment_path(:date => tempdate) %></strong></mark>
+				<% else %>
+					<%= link_to date.day, new_appointment_path(:date => tempdate) %>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+</p>
+
+<%= form_for :appointment, url: appointments_path do |f| %>
+	<p>
+		<%= f.hidden_field :date, value: @date %>
+		<%= f.hidden_field :reminded, value: :false %>
+		Hora: <%= f.select :hora, options_for_select(["00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30", "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"], @hora) %>
+	</p>
+	<p>
+		Doctor: <%= f.select :physician_id, options_from_collection_for_select(Physician.joins(:us_phys_rels).where("user_id = ?", current_user.id).order("lower(name) asc"), :id, :name) %>
+	</p>
+	<p>
+		Paciente: <%= f.select :patient_id, options_from_collection_for_select(Patient.joins(:us_pat_rels).where("user_id = ?", current_user.id).order("lower(appat) asc", "lower(apmat) asc", "lower(name) asc"), :id, :full_name) %>
+	</p>
+	<p>
+		<%= f.submit 'Guardar' %>
+	</p>
+<% end %>
+
+<br>
+<!-- %= params.inspect % -->

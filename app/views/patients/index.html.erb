@@ -1,0 +1,22 @@
+<% content_for :title, "Expedientes M\u00e9dicos - Lista de Pacientes" %>
+<h1>Pacientes</h1>
+
+<%= link_to 'Nuevo paciente', new_patient_path %><br><br>
+
+<p>
+	<table>
+		<% @patients.order("lower(appat) asc", "lower(apmat) asc", "lower(name) asc").each do |patient| %>
+			<tr>
+				<td><%= patient.appat %> <%= patient.apmat %>, <%= patient.name %></td>
+				<td><%= link_to 'Mostrar', patient_path(patient) %></td>
+				<td><%= link_to 'Editar', 	edit_patient_path(patient) %></td>
+				<td><%= link_to 'Eliminar', patient_path(patient), method: :delete, data: { confirm: "\u00bfEst\u00e1 seguro?" } %></td>
+			</tr>
+		<% end %>
+	</table>
+</p>
+
+<p>
+	<!-- %= link_to 'Citas', calendar_path % -->
+	<!-- %= button_to 'Citas', calendar_path, :method => :get % -->
+</p>

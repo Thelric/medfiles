@@ -1,0 +1,129 @@
+<% content_for :title, "Expedientes M\u00e9dicos - Datos de Pacientes" %>
+<h1>Datos de Paciente</h1>
+
+<% if @patient.errors.any? %>
+	<div id="error_explanation">
+		<h2>
+			<%= pluralize(@patient.errors.count, "error") %> evit&oacute; que se almacenara el nuevo comentario:
+		</h2>
+		<ul>
+			<% @patient.errors.full_messages.each do |msg| %>
+				<li><%= msg %></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
+
+
+<p>
+	<strong>Paciente:</strong>
+	<%= @patient.appat.strip %>
+	<% if @patient.apmat && @patient.apmat.strip != "" %>
+		<%= @patient.apmat.strip %>
+	<% end %>
+	, <%= @patient.name.strip %>
+</p>
+
+<p>
+	<strong>Sexo:</strong>
+	<%= @patient.sex %>
+</p>
+
+<% if @patient.age && @patient.age != 0 %>
+	<p>
+		<strong>Edad:</strong>
+		<%= number_with_precision(@patient.age, :precision => 0) %>
+	</p>
+<% end %>
+
+<%if @patient.eciv && @patient.eciv.strip != "" %>
+	<p>
+		<strong>Estado civil:</strong>
+		<% if @patient.sex == 'masculino' %>
+			<% case @patient.eciv; when "1" %>Soltero
+			<% when "2" %>Casado
+			<% when "3" %>Viudo
+			<% when "4" %>Divorciado
+			<% else %>Uni&oacute;n libre
+			<% end %>
+		<% else %>
+			<% case @patient.eciv; when "1" %>Soltera
+			<% when "2" %>Casada
+			<% when "3" %>Viuda
+			<% when "4" %>Divorciada
+			<% else %>Uni&oacute;n libre
+			<% end %>
+		<% end %>
+	</p>
+<% end %>
+
+<% if @patient.calle && @patient.calle.strip != "" %>
+	<p>
+		<strong>Direcci&oacute;n:</strong>
+		<%= @patient.calle.strip %>
+		<% if @patient.cnum && @patient.cnum != 0 %>
+			<%= number_with_precision(@patient.cnum, :precision => 0) %>
+		<% else %>
+			S/N
+		<% end %>
+	</p>
+<% end %>
+
+<% if (@patient.tcasa && @patient.tcasa.strip != "") || (@patient.tof && @patient.tof.strip != "") || (@patient.cel && @patient.cel.strip != "" ) || (@patient.email && @patient.email.strip != "") %>
+	<p>
+		<strong>Contacto</strong><br>
+		<% if @patient.tcasa && @patient.tcasa.strip != "" %>
+			Tel&eacute;fono casa: <%= @patient.tcasa.strip %><br>
+		<% end %>
+		<% if @patient.tof && @patient.tof.strip != "" %>
+			Tel&eacute;fono oficina: <%= @patient.tof.strip %><br>
+		<% end %>
+		<% if @patient.cel && @patient.cel.strip != "" %>
+			Celular: <%= @patient.cel.strip %><br>
+		<% end %>
+		<% if @patient.email && @patient.email.strip != "" %>
+			Correo: <%= mail_to @patient.email.strip %>
+		<% end %>
+	</p>
+<% end %>
+
+<% if @patient.email && @patient.email.strip != "" %>
+	<%= button_to "Correo", {:action => "correo"} %>
+<% else %>
+	<%= button_to "Correo", {:action => "correo"}, disabled: true %>
+<% end %>
+
+<h2>Notas de historial</h2>
+<strong>Nueva nota:</strong>
+<%= form_for([@patient, @patient.records.build]) do |f| %>
+	<p>
+		<% time_current = Time.new %>
+		<% time_formated = "#{time_current.year}-" + "#{time_current.month}".rjust(2, '0') + "-" + "#{time_current.day}".rjust(2, '0') + " " + "#{time_current.hour}".rjust(2, '0') + ":" + "#{time_current.min}".rjust(2, '0') + ":" + "#{time_current.sec}".rjust(2, '0') %>
+		<%= time_formated %>
+		<%= f.hidden_field :fecha, :value => time_formated %>
+	</p>
+	<p>
+		<%= f.text_area :body %>
+	</p>
+	<p>
+		<%= f.submit "Guardar" %>
+	</p>
+<% end %>
+<% if @patient.records.count > 0 %>
+	<strong>Notas anteriores:</strong>
+	<p>
+		<table>
+			<% @patient.records.order(fecha: :desc).take(3).each do |record| %>
+				<% time_formated = "#{record.fecha.year}-" + "#{record.fecha.month}".rjust(2, '0') + "-" + "#{record.fecha.day}".rjust(2, '0') + " " + "#{record.fecha.hour}".rjust(2, '0') + ":" + "#{record.fecha.min}".rjust(2, '0')%>
+				<tr>	
+					<td><%= time_formated%></td>
+					<td><%= record.body %></td>
+				</tr>
+			<% end %>
+		</table>
+	</p>
+<% end %>
+
+<br>
+<%= link_to 'Editar paciente', edit_patient_path(@patient) %><br>
+<%= link_to 'Lista de pacientes', patients_path %>

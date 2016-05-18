@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Prototype2</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag "http://yandex.st/bootstrap/3.0.2/css/bootstrap.min.css", media: "all" %>
+  <%= javascript_include_tag "http://yandex.st/bootstrap/3.0.2/js/bootstrap.min.js" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <%= link_to 'Prototipo', root_path, class: 'navbar-brand' %>
+    </div>
+    <div id="navbar">
+      <ul class="nav navbar-nav">
+        <li><%= link_to 'Inicio', root_path %></li>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
+        <% if current_user %>
+          <li><span><%= current_user.email %></span></li>
+          <li><%= link_to 'Salir', sign_out_path, method: :delete %></li>
+        <% else %>
+          <li><%= link_to 'Ingresar', sign_in_path %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <% flash.each do |key, value| %>
+    <div class="alert alert-<%= key %>">
+      <%= value %>
+    </div>
+  <% end %>
+
+  <%= yield %>
+
+</div>
+
+</body>
+</html>

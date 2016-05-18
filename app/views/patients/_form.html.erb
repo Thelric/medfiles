@@ -1,0 +1,82 @@
+<%= form_for @patient do |f| %>
+
+  <% if @patient.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@patient.errors.count, "error") %> evit&oacute; que se almacenara la informaci&oacute;n de este paciente:
+      </h2>
+      <ul>
+        <% @patient.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p>
+    <%= f.label "Apellido Paterno" %><br>
+    <%= f.text_field :appat %>
+  </p>
+ 
+  <p>
+    <%= f.label "Apellido Materno" %><br>
+    <%= f.text_field :apmat %>
+  </p>
+ 
+  <p>
+    <%= f.label "Nombre" %><br>
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <%= f.label "Sexo" %><br>
+    <%= f.label "femenino" %>
+    <%= f.radio_button 'sex', 'femenino' %><br>
+    <%= f.label "masculino" %>
+    <%= f.radio_button 'sex', 'masculino' %>
+  </p>
+
+  <p>
+    <%= f.label "Edad" %><br>
+    <%= f.number_field :age, :class => 'text_field', :value => number_with_precision(@patient.age, :precision => 0) %>
+  </p>
+
+  <p>
+    <%= f.label "Estado civil" %><br>
+    <%= f.select :eciv, options_for_select([['Solter@', 1],['Casad@', 2],['Viud@', 3],['Divorciad@', 4],["Uni\u00f3n libre", 5]], 1) %>
+  </p>
+
+  <p>
+    <%= f.label "Calle" %><br>
+    <%= f.text_field :calle %>
+  </p>
+
+  <p>
+    <%= f.label "N\u00famero" %><br>
+    <%= f.number_field :cnum, :class => 'text_field', :value => number_with_precision(@patient.cnum, :precision => 0) %>
+  </p>
+
+  <p>
+    <%= f.label "Tel casa" %><br>
+    <%= f.text_field :tcasa %>
+  </p>
+
+  <p>
+    <%= f.label "Tel oficina" %><br>
+    <%= f.text_field :tof %>
+  </p>
+
+  <p>
+    <%= f.label "Celular" %><br>
+    <%= f.text_field :cel %>
+  </p>
+
+  <p>
+    <%= f.label "Correo" %><br>
+    <%= f.text_field :email %>
+  </p>
+
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>

@@ -1,0 +1,36 @@
+<div class="jumbotron">
+<% if !current_user %>
+  <div class="container">
+    <h1>Bienvenidos</h1>
+    <p>Registrese para iniciar</p>
+    <p>
+      <%= link_to new_user_path, class: 'btn btn-primary btn-lg' do %>
+        Registrarse &raquo;
+      <% end %>
+    </p>
+  </div>
+<% end %>
+
+<% if current_user %>
+  <p><%= link_to 'Lista de pacientes', patients_path %></p>
+  <p><%= link_to 'Lista de medicos', physicians_path %></p>
+  <p><%= link_to 'Citas', calendar_path %></p>
+
+  <% if !current_user %>
+    <div class="page-header"><h1>Welcome back!</h1></div>
+
+    <h2>Some info about you...</h2>
+
+    <div class="well well-lg">
+      <ul>
+        <li>Login count: <%= current_user.login_count %></li>
+        <li>Failed login count: <%= current_user.failed_login_count %></li>
+        <li>Last request: <%= current_user.last_request_at %></li>
+        <li>Current login at: <%= current_user.current_login_at %></li>
+        <li>Last login at: <%= current_user.last_login_at %></li>
+        <li>Current login IP: <%= current_user.current_login_ip %></li>
+        <li>Last login IP: <%= current_user.last_login_ip %></li>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
